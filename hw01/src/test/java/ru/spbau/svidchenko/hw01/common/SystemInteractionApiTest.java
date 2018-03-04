@@ -24,9 +24,10 @@ public class SystemInteractionApiTest {
 
     @Test
     public void executeCommand_echoCmd_sameText() throws Exception {
-        List<String> result = SystemInteractionApi.executeCommand("ping",
-                Collections.singletonList("ya.ru"), Collections.emptyList());
-        assertFalse(result.isEmpty());
+        List<String> result = SystemInteractionApi.executeCommand("echo",
+                Collections.singletonList("test"), Collections.emptyList());
+        assertEquals(1, result.size());
+        assertEquals("test", result.get(0));
     }
 
 }

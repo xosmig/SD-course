@@ -12,8 +12,9 @@ public class OutterCommandTest {
 
     @Test
     public void execute() throws Exception {
-        List<String> result = new OutterCommand(Collections.singletonList("ya.ru"), "ping")
+        List<String> result = new OutterCommand(Collections.singletonList("test"), "echo")
                 .execute(Collections.emptyList()).getOutput();
-        assertFalse(result.isEmpty());
+        assertEquals(1, result.size());
+        assertEquals("test", result.get(0));
     }
 }
