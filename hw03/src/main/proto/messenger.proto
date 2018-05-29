@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+option java_package = "ru.spbau.mit.sd.hw11";
+
+service MessengerService {
+    rpc send(Message) returns (Void) {}
+}
+
+message Message {
+    string sender = 1;
+    string message = 2;
+}
+
+message Void {}
