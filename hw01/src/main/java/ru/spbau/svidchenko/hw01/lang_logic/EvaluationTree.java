@@ -33,11 +33,7 @@ public class EvaluationTree {
         if (result.isInterrupted()) {
             return false;
         }
-        try {
-            IOUtils.writeTo(result.getOutput(), output);
-        } catch (IOException e) {
-            throw new CliException(e);
-        }
+        IOUtils.writeTo(result.getOutput(), output);
         return false;
     }
 }
