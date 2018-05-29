@@ -26,7 +26,7 @@ public class WcCommandTest {
         assertEquals(3, result.size());
         assertEquals("Word count: 1", result.get(0));
         assertEquals("Line count: 1", result.get(1));
-        assertEquals("Byte count: " + Character.BYTES * testString.length(), result.get(2));
+        assertEquals("Byte count: " + testString.length(), result.get(2));
     }
 
     @Test
@@ -37,6 +37,6 @@ public class WcCommandTest {
         assertEquals(3, result.size());
         assertEquals("Word count: 4", result.get(0));
         assertEquals("Line count: 2", result.get(1));
-        assertEquals("Byte count: " + Character.BYTES * (testString1.length() + testString2.length()), result.get(2));
+        assertEquals("Byte count: " + (testString1.length() + testString2.length()), result.get(2));
     }
 }
