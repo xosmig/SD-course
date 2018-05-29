@@ -139,6 +139,8 @@ public class ParserImpl extends Parser {
                 return new CatCommand(arguments);
             case "exit":
                 return new ExitCommand(arguments);
+            case "grep":
+                return new GrepCommand(arguments);
             default:
                 return new OutterCommand(arguments, name);
         }
