@@ -7,7 +7,7 @@ import ru.spbau.svidchenko.hw01.lang_logic.EvaluationTree;
 import ru.spbau.svidchenko.hw01.lang_logic.commands.Command;
 
 /**
- *
+ * Abstract parser for CLI. Firstly process variables and then parse command.
  */
 public abstract class Parser {
     public EvaluationTree parseStatement(String statement) throws CliException {
