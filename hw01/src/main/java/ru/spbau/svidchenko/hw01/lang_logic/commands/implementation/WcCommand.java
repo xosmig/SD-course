@@ -17,6 +17,7 @@ import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collector;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -36,7 +37,7 @@ public class WcCommand extends Command {
         }
         if (args.size() == 1) {
             try (InputStream file = SystemInteractionApi.getFile(args.get(0))) {
-                return CommandOutput.output(IOUtils.readFrom(file));
+                return CommandOutput.output(IOUtils.readFrom(file).stream().collect(new WcCollector()));
             } catch (CliException e) {
                 return CommandOutput.interrupt();
             } catch (IOException e) {
@@ -58,7 +59,7 @@ public class WcCommand extends Command {
                 List<String> lines = Arrays.asList(s.split("\\n"));
                 lines.forEach(line -> acc.setWordCount(acc.getWordCount() + s.split("[ \\t]+").length));
                 acc.setLineCount(acc.getLineCount() + lines.size());
-                acc.setBytes(acc.getBytes() + s.length() * Character.BYTES);
+                acc.setBytes(acc.getBytes() + s.length());
             };
         }
 

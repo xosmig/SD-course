@@ -13,7 +13,7 @@ import java.util.List;
  * @author ArgentumWalker
  */
 public class OutterCommand extends Command {
-    private String command;
+    private final String command;
 
     public OutterCommand(List<String> arguments, String command) {
         super(arguments);
@@ -27,5 +27,9 @@ public class OutterCommand extends Command {
         } catch (IOException e) {
             return CommandOutput.interrupt();
         }
+    }
+
+    public String getCommand() {
+        return command;
     }
 }

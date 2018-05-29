@@ -11,8 +11,8 @@ import java.util.List;
  * @author ArgentumWalker
  */
 public class PipelineCommand extends Command {
-    private Command left;
-    private Command right;
+    private final Command left;
+    private final Command right;
 
     public PipelineCommand(List<String> arguments, Command leftCommand, Command rightCommand) {
         super(arguments);
@@ -27,5 +27,13 @@ public class PipelineCommand extends Command {
             return first;
         }
         return right.execute(first.getOutput());
+    }
+
+    public Command getLeft() {
+        return left;
+    }
+
+    public Command getRight() {
+        return right;
     }
 }

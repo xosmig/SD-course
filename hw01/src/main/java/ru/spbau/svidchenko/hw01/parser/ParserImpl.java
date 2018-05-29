@@ -26,9 +26,9 @@ public class ParserImpl extends Parser {
         ALLOWED_NAME_CHARACTERS.add('_');
         ALLOWED_NAME_CHARACTERS.add(':');
         ALLOWED_NAME_CHARACTERS.add('/');
-        ALLOWED_NAME_CHARACTERS.add('\\');
         ALLOWED_NAME_CHARACTERS.add('.');
     }
+    private static final Character NAME_BREAK_CHARACTER = ' ';
 
     @Override
     protected String processVariables(String statement) throws ParseException, NoSuchVariableException {
@@ -36,20 +36,28 @@ public class ParserImpl extends Parser {
         for (Character c : statement.toCharArray()) {
              queue.add(c);
         }
-        boolean inSingleQuotes = false;
+        boolean inDoubleQuotes = false;
         StringBuilder builder = new StringBuilder();
         while (!queue.isEmpty()) {
+            if (queue.element().equals('\\')) {
+                queue.remove();
+                if (!queue.isEmpty()) {
+                    builder.append(queue.poll());
+                } else {
+                    builder.append('\\');
+                }
+            }
             if (queue.element().equals('$')) {
                 queue.remove();
                 builder.append(SystemInteractionApi.getEnvVariable(parseName(queue)));
                 continue;
             }
-            if (queue.element().equals('"') && !inSingleQuotes) {
-                builder.append('"').append(parseStringWithDoubleQuotes(queue)).append('"');
+            if (queue.element().equals('\'') && !inDoubleQuotes) {
+                builder.append('\'').append(parseStringWithSingleQuotes(queue)).append('\'');
                 continue;
             }
-            if (queue.element().equals('\'')) {
-                inSingleQuotes = !inSingleQuotes;
+            if (queue.element().equals('"')) {
+                inDoubleQuotes = !inDoubleQuotes;
             }
             builder.append(queue.poll());
         }
@@ -111,7 +119,7 @@ public class ParserImpl extends Parser {
         return zipPipe(pipedCommands);
     }
 
-    private Command zipPipe(List<Command> pipedCommands) {
+    protected Command zipPipe(List<Command> pipedCommands) {
         Command right = pipedCommands.get(pipedCommands.size() - 1);
         for (int i = pipedCommands.size() - 2; i > -1; i--) {
             right = new PipelineCommand(Collections.emptyList(), pipedCommands.get(i), right);
@@ -119,7 +127,7 @@ public class ParserImpl extends Parser {
         return right;
     }
 
-    private Command getCommand(String name, List<String> arguments) {
+    protected Command getCommand(String name, List<String> arguments) {
         switch (name) {
             case "echo":
                 return new EchoCommand(arguments);
@@ -137,41 +145,46 @@ public class ParserImpl extends Parser {
 
     }
 
-    private String parseName(Queue<Character> queue) {
+    protected String parseName(Queue<Character> queue) {
         StringBuilder builder = new StringBuilder();
         while (!queue.isEmpty() && ALLOWED_NAME_CHARACTERS.contains(queue.element())) {
             builder.append(queue.poll());
         }
+        if (!queue.isEmpty() && queue.element() == NAME_BREAK_CHARACTER) {
+            queue.poll();
+        }
         return builder.toString();
     }
 
-    private String parseStringWithDoubleQuotes(Queue<Character> queue) throws ParseException {
+    protected String parseStringWithDoubleQuotes(Queue<Character> queue) throws ParseException {
         StringBuilder builder = new StringBuilder();
-        queue.remove();
-        while (!queue.isEmpty() && !queue.element().equals('"')) {
-            builder.append(queue.poll());
-        }
-        if (queue.isEmpty()) {
+        try {
+            queue.remove();
+            while (!queue.isEmpty() && !queue.element().equals('"')) {
+                builder.append(queue.poll());
+            }
+            queue.remove();
+        } catch (NoSuchElementException e) {
             throw new ParseException();
         }
-        queue.remove();
         return builder.toString();
     }
 
-    private String parseStringWithSingleQuotes(Queue<Character> queue) throws ParseException {
+    protected String parseStringWithSingleQuotes(Queue<Character> queue) throws ParseException {
         StringBuilder builder = new StringBuilder();
-        queue.remove();
-        while (!queue.isEmpty() && !queue.element().equals('\'')) {
-            builder.append(queue.poll());
-        }
-        if (queue.isEmpty()) {
+        try {
+            queue.remove();
+            while (!queue.isEmpty() && !queue.element().equals('\'')) {
+                builder.append(queue.poll());
+            }
+            queue.remove();
+        } catch (NoSuchElementException e) {
             throw new ParseException();
         }
-        queue.remove();
         return builder.toString();
     }
 
-    private String parseRawString(Queue<Character> queue) {
+    protected String parseRawString(Queue<Character> queue) {
         StringBuilder builder = new StringBuilder();
         while (!queue.isEmpty() && !queue.element().equals(' ')
                 && !queue.element().equals('\n') && !queue.element().equals('\'') && !queue.element().equals('"')) {

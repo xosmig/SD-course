@@ -21,7 +21,7 @@ public final class SystemInteractionApi {
 
     public static String getEnvVariable(String name) throws NoSuchVariableException {
         if (!NAME_2_VARIABLE.containsKey(name)) {
-            throw new NoSuchVariableException();
+            throw new NoSuchVariableException(name);
         }
         return NAME_2_VARIABLE.get(name);
     }
