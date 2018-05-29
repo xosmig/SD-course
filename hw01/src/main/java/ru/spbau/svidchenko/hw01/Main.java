@@ -3,6 +3,7 @@ package ru.spbau.svidchenko.hw01;
 import ru.spbau.svidchenko.hw01.common.IOUtils;
 import ru.spbau.svidchenko.hw01.common.ThreadingService;
 import ru.spbau.svidchenko.hw01.exceptions.CliException;
+import ru.spbau.svidchenko.hw01.exceptions.IOUtilsException;
 import ru.spbau.svidchenko.hw01.parser.Parser;
 import ru.spbau.svidchenko.hw01.parser.ParserImpl;
 
@@ -29,6 +30,8 @@ public class Main {
                 }
             } catch (CliException e) {
                 System.err.println(e.getMessage());
+            } catch (IOUtilsException e) {
+                e.getCause().printStackTrace();
             } catch (NoSuchElementException e) {
                 scanner = new Scanner(System.in);
             } catch (Exception e) {

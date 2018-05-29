@@ -1,5 +1,7 @@
 package ru.spbau.svidchenko.hw01.common;
 
+import ru.spbau.svidchenko.hw01.exceptions.IOUtilsException;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,9 +17,8 @@ public final class IOUtils {
         return new BufferedReader(new InputStreamReader(input)).lines().collect(Collectors.toList());
     }
 
-    public static void writeTo(List<String> stringStream, OutputStream output) throws IOException {
+    public static void writeTo(List<String> stringStream, OutputStream output) {
         Writer writer = new OutputStreamWriter(output);
-        List<IOException> exceptions = new ArrayList<>();
         stringStream.forEach(
                 str -> {
                     try {
@@ -25,11 +26,8 @@ public final class IOUtils {
                         writer.write("\n");
                         writer.flush();
                     } catch (IOException e) {
-                        exceptions.add(e);
+                        throw new IOUtilsException(e);
                     }
                 });
-        if (!exceptions.isEmpty()) {
-            throw exceptions.get(0);
-        }
     }
 }
