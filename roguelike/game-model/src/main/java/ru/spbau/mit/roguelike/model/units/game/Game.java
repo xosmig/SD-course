@@ -27,7 +27,7 @@ public class Game implements Savable {
         try {
             Configuration.addFromStream(Game.class.getResourceAsStream("/Game.properties"));
         } catch (IOException e) {
-            //TODO log
+            Logging.log(e);
         }
     }
 

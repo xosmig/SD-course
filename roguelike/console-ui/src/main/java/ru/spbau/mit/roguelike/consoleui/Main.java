@@ -6,8 +6,10 @@ import org.codetome.zircon.api.input.InputType;
 import org.codetome.zircon.api.resource.GraphicTilesetResource;
 import org.codetome.zircon.api.terminal.Terminal;
 import org.codetome.zircon.internal.font.impl.PickFirstMetaStrategy;
+import ru.spbau.mit.roguelike.commons.logging.Logging;
 import ru.spbau.mit.roguelike.consoleui.views.MainMenu;
 import ru.spbau.mit.roguelike.uicommon.MainApp;
+import sun.rmi.runtime.Log;
 
 import java.io.IOException;
 
@@ -28,7 +30,7 @@ public class Main extends MainApp {
         try {
             terminal.close();
         } catch (IOException e) {
-            //TODO log
+            Logging.log(e);
         }
     }
 }

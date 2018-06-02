@@ -23,7 +23,6 @@ public class ConsoleGame extends GameView {
     private final static int LOG_WIDTH = 23;
     private final Terminal terminal;
     private final LoggingHolder log;
-    private final int barsLen;
     private final int right;
     private final int bottom;
     private final int fieldCenterX;
@@ -34,7 +33,6 @@ public class ConsoleGame extends GameView {
     public ConsoleGame(View parentView, CharacterEntity player, Terminal terminal) {
         super(parentView, player);
         this.terminal = terminal;
-        barsLen = terminal.getBoundableSize().getColumns() - 87 + 8;
         right = terminal.getBoundableSize().getColumns();
         bottom = terminal.getBoundableSize().getRows();
         fieldCenterX = (right - LOG_WIDTH) / 2;

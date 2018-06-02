@@ -2,6 +2,7 @@ package ru.spbau.mit.roguelike.model.factories;
 
 import ru.spbau.mit.roguelike.commons.Configuration;
 import ru.spbau.mit.roguelike.commons.RandomUtils;
+import ru.spbau.mit.roguelike.commons.logging.Logging;
 import ru.spbau.mit.roguelike.model.units.effect.*;
 import ru.spbau.mit.roguelike.model.units.game.Game;
 
@@ -18,7 +19,7 @@ public final class EffectFactory {
         try {
             Configuration.addFromStream(EffectFactory.class.getResourceAsStream("/EffectFactory.properties"));
         } catch (IOException e) {
-            //TODO log
+            Logging.log(e);
         }
     }
 

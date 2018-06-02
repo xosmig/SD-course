@@ -58,7 +58,7 @@ public abstract class InventoryView extends View {
                 .collect(Collectors.toSet());
         inventoryItems.addAll(dropedEquipment);
         playerEquipment.removeAll(dropedEquipment);
-        equipmentPosition = Math.max(playerEquipment.size() - 1, equipmentPosition);
+        equipmentPosition = Math.min(Math.max(0, playerEquipment.size() - 1), equipmentPosition);
         draw();
     }
 
@@ -70,7 +70,7 @@ public abstract class InventoryView extends View {
         entity.removeEquipment(source);
         inventoryItems.add(source);
         inventory.addItem(source);
-        equipmentPosition = Math.max(equipmentPosition, Math.min(0, playerEquipment.size() - 1));
+        equipmentPosition = Math.min(equipmentPosition, Math.max(0, playerEquipment.size() - 1));
         onEntityEquipmentChange.run();
         draw();
     }
@@ -78,7 +78,7 @@ public abstract class InventoryView extends View {
     protected final void deleteSelectedItem() {
         if (!inventoryItems.isEmpty()) {
             inventory.removeItem(inventoryItems.remove(inventoryPosition));
-            inventoryPosition = Math.max(inventoryPosition, Math.min(0, inventoryItems.size() - 1));
+            inventoryPosition = Math.min(inventoryPosition, Math.max(0, inventoryItems.size() - 1));
         }
         draw();
     }
@@ -134,7 +134,7 @@ public abstract class InventoryView extends View {
             playerEquipment.add(e);
             inventoryItems.remove(e);
             inventory.removeItem(e);
-            inventoryPosition = Math.max(inventoryPosition, Math.min(0, inventoryItems.size() - 1));
+            inventoryPosition = Math.min(inventoryPosition, Math.max(0, inventoryItems.size() - 1));
         }
 
         @Override

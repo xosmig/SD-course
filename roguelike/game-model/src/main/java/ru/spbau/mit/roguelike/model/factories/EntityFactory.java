@@ -2,6 +2,7 @@ package ru.spbau.mit.roguelike.model.factories;
 
 import ru.spbau.mit.roguelike.commons.Configuration;
 import ru.spbau.mit.roguelike.commons.RandomUtils;
+import ru.spbau.mit.roguelike.commons.logging.Logging;
 import ru.spbau.mit.roguelike.model.units.entity.*;
 import ru.spbau.mit.roguelike.model.units.game.Game;
 import ru.spbau.mit.roguelike.model.units.item.Item;
@@ -20,7 +21,7 @@ public final class EntityFactory {
         try {
             Configuration.addFromStream(EntityFactory.class.getResourceAsStream("/EntityFactory.properties"));
         } catch (IOException e) {
-            //TODO log
+            Logging.log(e);
         }
     }
 
@@ -92,6 +93,7 @@ public final class EntityFactory {
         for (int i = 0; i < statDescriptor.getLegsCount(); i++) {
             creep.addEquipment(ItemFactory.getLegArmor(level));
         }
+        creep.addEquipment(ItemFactory.getBodyArmor(level));
         return creep;
     }
 

@@ -3,6 +3,7 @@ package ru.spbau.mit.roguelike.consoleui.views;
 import org.codetome.zircon.api.Position;
 import org.codetome.zircon.api.color.TextColorFactory;
 import org.codetome.zircon.api.terminal.Terminal;
+import ru.spbau.mit.roguelike.commons.logging.Logging;
 import ru.spbau.mit.roguelike.consoleui.UserInputHolder;
 import ru.spbau.mit.roguelike.model.units.entity.CharacterEntity;
 import ru.spbau.mit.roguelike.model.units.entity.StatDescriptor;
@@ -132,7 +133,7 @@ public class ConsoleInventory extends InventoryView {
                     }
                 }
             } catch (InterruptedException e) {
-                //TODO log
+                Logging.log(e);
             }
         }
     }

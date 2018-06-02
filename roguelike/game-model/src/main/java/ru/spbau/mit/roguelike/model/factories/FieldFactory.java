@@ -3,6 +3,7 @@ package ru.spbau.mit.roguelike.model.factories;
 import ru.spbau.mit.roguelike.commons.Configuration;
 import ru.spbau.mit.roguelike.commons.Point;
 import ru.spbau.mit.roguelike.commons.RandomUtils;
+import ru.spbau.mit.roguelike.commons.logging.Logging;
 import ru.spbau.mit.roguelike.model.units.game.*;
 
 import java.io.IOException;
@@ -16,7 +17,7 @@ public final class FieldFactory {
         try {
             Configuration.addFromStream(FieldFactory.class.getResourceAsStream("/FieldFactory.properties"));
         } catch (IOException e) {
-            //TODO log
+            Logging.log(e);
         }
     }
 

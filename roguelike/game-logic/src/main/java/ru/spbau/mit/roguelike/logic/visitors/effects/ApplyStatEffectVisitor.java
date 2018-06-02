@@ -10,10 +10,13 @@ import ru.spbau.mit.roguelike.model.units.game.Game;
  */
 public class ApplyStatEffectVisitor extends ApplyEffectVisitor {
     private final StatDescriptor stat;
+    private int slownessDelta = 0;
 
     public static void process(WorldEntity target) {
         if (target.getCurrentStatDescriptor() != null) {
-            new ApplyStatEffectVisitor(target).process();
+            ApplyStatEffectVisitor visitor = new ApplyStatEffectVisitor(target);
+            visitor.process();
+            target.getCurrentStatDescriptor().setSlownessModifier(visitor.slownessDelta);
         }
     }
 
@@ -62,6 +65,6 @@ public class ApplyStatEffectVisitor extends ApplyEffectVisitor {
         stat.setIntelligence(stat.getIntelligence() + effect.getIntelligenceDelta());
         stat.setWisdom(stat.getWisdom() + effect.getWisdomDelta());
         stat.setLuck(stat.getLuck() + effect.getLuckDelta());
-        stat.setSlowness(stat.getSlowness() + effect.getSlownessDelta());
+        slownessDelta += effect.getSlownessDelta();
     }
 }

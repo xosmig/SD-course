@@ -11,7 +11,6 @@ import ru.spbau.mit.roguelike.uicommon.views.elements.TextButton;
 public abstract class MainMenuView extends ListMenu<TextButton> {
     public MainMenuView() {
         super(null);
-        //TODO config
         super.addButton(new TextButton("Play") {
             @Override
             public void onClick() {

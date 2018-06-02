@@ -108,6 +108,11 @@ public class StatDescriptor implements Savable {
         return this;
     }
 
+    public StatDescriptor setSlownessModifier(int slowness) {
+        this.slowness = Math.max(1, 10 + slowness - dexterity / 10);
+        return this;
+    }
+
     public StatDescriptor resetSlowness() {
         this.slowness = Math.max(1, 10 - dexterity / 10);
         return this;
@@ -138,5 +143,22 @@ public class StatDescriptor implements Savable {
                 .setHandsCount(handsCount)
                 .setLegsCount(legsCount);
         return target;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof StatDescriptor) {
+            StatDescriptor other = (StatDescriptor) obj;
+            return other.getDexterity() == dexterity &&
+                    other.getStamina() == stamina &&
+                    other.getStrength() == strength &&
+                    other.getLuck() == luck &&
+                    other.getWisdom() == wisdom &&
+                    other.getIntelligence() == intelligence &&
+                    other.getLegsCount() == legsCount &&
+                    other.getHeadsCount() == headsCount &&
+                    other.getHandsCount() == handsCount;
+        }
+        return super.equals(obj);
     }
 }

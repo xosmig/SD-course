@@ -75,7 +75,6 @@ public abstract class WorldEntity implements Savable {
     }
 
     public boolean addEquipment(Equipment e) {
-        //TODO check conditions
         equipment.add(e);
         return true;
     }

@@ -2,6 +2,7 @@ package ru.spbau.mit.roguelike.model.factories;
 
 import ru.spbau.mit.roguelike.commons.Configuration;
 import ru.spbau.mit.roguelike.commons.RandomUtils;
+import ru.spbau.mit.roguelike.commons.logging.Logging;
 import ru.spbau.mit.roguelike.model.units.effect.*;
 import ru.spbau.mit.roguelike.model.units.game.Game;
 import ru.spbau.mit.roguelike.model.units.item.Item;
@@ -22,7 +23,7 @@ public final class ItemFactory {
         try {
             Configuration.addFromStream(ItemFactory.class.getResourceAsStream("/ItemFactory.properties"));
         } catch (IOException e) {
-            //TODO log
+            Logging.log(e);
         }
     }
 
@@ -131,7 +132,7 @@ public final class ItemFactory {
         if (power >= Configuration.getInt("ITEM_FACTORY_EQUIPMENT_THREE_EFFECTS_MIN_POWER")) {
             effectsCount = RandomUtils.getInt(1, 3);
         }
-        return RandomUtils.asSum(power, effectsCount).stream()
+        return RandomUtils.asSumWithoutZeros(power, effectsCount).stream()
                 .map(p -> EffectFactory.getPositiveEffect(0, p))
                 .collect(Collectors.toSet());
     }
@@ -145,7 +146,7 @@ public final class ItemFactory {
         if (power >= Configuration.getInt("ITEM_FACTORY_EQUIPMENT_THREE_EFFECTS_MIN_POWER")) {
             effectsCount = RandomUtils.getInt(1, 3);
         }
-        return RandomUtils.asSum(levelSum, effectsCount).stream()
+        return RandomUtils.asSumWithoutZeros(levelSum, effectsCount).stream()
                 .map(EffectFactory::getNegativeEffect)
                 .collect(Collectors.toSet());
     }

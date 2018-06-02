@@ -21,7 +21,7 @@ public abstract class View implements Runnable {
 
     public final void close() {
         if (parentView != null) {
-            parentView.open();
+            parentView.draw();
         }
     }
 }
