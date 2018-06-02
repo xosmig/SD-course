@@ -36,4 +36,9 @@ public class Point implements Savable {
     public int hashCode() {
         return 16127 * x + y;
     }
+
+    @Override
+    public String toString() {
+        return "(" + x + ", " + y + ")";
+    }
 }

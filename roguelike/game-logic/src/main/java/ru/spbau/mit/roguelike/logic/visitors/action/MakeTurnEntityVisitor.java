@@ -5,7 +5,6 @@ import ru.spbau.mit.roguelike.model.units.entity.*;
 import ru.spbau.mit.roguelike.model.units.game.Game;
 import ru.spbau.mit.roguelike.model.visitors.EntityVisitor;
 
-import java.util.function.BiFunction;
 import java.util.function.Function;
 
 /**
@@ -31,7 +30,7 @@ public class MakeTurnEntityVisitor implements EntityVisitor {
     @Override
     public void visit(CharacterEntity entity) {
         EntityAction action = onPlayerTurn.apply(entity);
-        performAction(entity, action);
+        performAction(entity, action, entity.getName());
     }
 
     @Override
@@ -42,10 +41,10 @@ public class MakeTurnEntityVisitor implements EntityVisitor {
     @Override
     public void visit(CreepEntity entity) {
         EntityAction action = CreepAI.getAction(world, entity);
-        performAction(entity, action);
+        performAction(entity, action, entity.getName());
     }
 
-    private void performAction(WorldEntity entity, EntityAction action) {
+    private void performAction(WorldEntity entity, EntityAction action, String actorName) {
         Point targetPoint = world.getEntityPositionById(entity.getId());
         switch (action) {
             case DOWN: {
@@ -80,7 +79,7 @@ public class MakeTurnEntityVisitor implements EntityVisitor {
                 return;
             }
         }
-        world.visitEntityAt(targetPoint, new BattleTargetEntityVisitor(entity, world));
+        world.visitEntityAt(targetPoint, new BattleTargetEntityVisitor(entity, actorName, world));
         if (world.isCellPassable(targetPoint)) {
             world.moveOrSpawnEntity(targetPoint, entity);
         }

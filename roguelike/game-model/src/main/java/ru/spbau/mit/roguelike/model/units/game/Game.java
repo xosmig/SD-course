@@ -3,6 +3,8 @@ package ru.spbau.mit.roguelike.model.units.game;
 import ru.spbau.mit.roguelike.commons.Configuration;
 import ru.spbau.mit.roguelike.commons.Point;
 import ru.spbau.mit.roguelike.commons.Savable;
+import ru.spbau.mit.roguelike.commons.logging.Event;
+import ru.spbau.mit.roguelike.commons.logging.Logging;
 import ru.spbau.mit.roguelike.model.units.entity.BarrierEntity;
 import ru.spbau.mit.roguelike.model.units.entity.WorldEntity;
 import ru.spbau.mit.roguelike.model.visitors.EntityVisitor;
@@ -81,6 +83,10 @@ public class Game implements Savable {
     }
 
     public void visitEntityAt(Point position, EntityVisitor visitor) {
+        if (position.getX() < 0 || position.getX() > field.getWidth() + 1 ||
+                position.getY() < 0 || position.getY() > field.getHeight() + 1) {
+            return;
+        }
         Cell cell = field.getCellAt(position);
         if (cell instanceof CellWithEntity) {
             ((CellWithEntity) cell).getEntity().accept(visitor);
@@ -94,6 +100,7 @@ public class Game implements Savable {
     public void increaseWorldExp(int level) {
         worldExp += level;
         if (worldExp > Math.pow(worldLevel, Configuration.getDouble("GAME_WORLD_EXPERIENCE_POWER"))) {
+            Logging.log(new Event(Point.of(worldLevel, worldExp), " level up!"));
             worldExp = 0;
             worldLevel += 1;
         }

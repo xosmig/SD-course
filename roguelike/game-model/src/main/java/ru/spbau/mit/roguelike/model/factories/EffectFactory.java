@@ -50,7 +50,7 @@ public final class EffectFactory {
     }
 
     public static int calculateStandardPower(int level, int duration) {
-        return (int)(6 * level / Math.pow(duration,
+        return (int)(5 * level / Math.pow(duration,
                 Configuration.getDouble("EFFECT_FACTORY_DURATION_POWER")));
     }
 

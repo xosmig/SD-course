@@ -44,7 +44,7 @@ public final class TerminalUtils {
     public static void fill(Terminal t, Position start, Position end, TextColor color) {
         t.setBackgroundColor(color);
         for (int i = start.getColumn(); i <= end.getColumn(); i++) {
-            for (int j = start.getColumn(); j <= end.getColumn(); j++) {
+            for (int j = start.getRow(); j <= end.getRow(); j++) {
                 t.setCharacterAt(Position.of(i, j), ' ');
             }
         }
@@ -59,6 +59,10 @@ public final class TerminalUtils {
                 t, Position.of(5 + barsLen, row + 1));
         TerminalUtils.printText("]     /     +   | M.DMG      | STM     /     WIS     /     LCK     /",
                 t, Position.of(5 + barsLen, row + 2));
+        if (row + 3 < t.getBoundableSize().getRows()) {
+            TerminalUtils.printText("|            | HANDS   /     HEADS   /     LEGS    /",
+                    t, Position.of(21 + barsLen, row + 3));
+        }
         TerminalUtils.printText("| LVL        | SLOWNESS     /",
                 t, Position.of(21 + barsLen, row));
     }
@@ -84,6 +88,17 @@ public final class TerminalUtils {
         TerminalUtils.printText(String.valueOf(currentStat.getLuck()), t, Position.of(offset + 33, row + 2));
         TerminalUtils.printText(String.valueOf(baseStat.getLuck()), t, Position.of(offset + 38, row + 2));
 
+
+        if (row + 3 < t.getBoundableSize().getRows()) {
+            TerminalUtils.printText(String.valueOf(currentStat.getHandsCount()), t, Position.of(offset + 7, row + 3));
+            TerminalUtils.printText(String.valueOf(baseStat.getHandsCount()), t, Position.of(offset + 10, row + 3));
+
+            TerminalUtils.printText(String.valueOf(currentStat.getHeadsCount()), t, Position.of(offset + 21, row + 3));
+            TerminalUtils.printText(String.valueOf(baseStat.getHeadsCount()), t, Position.of(offset + 24, row + 3));
+
+            TerminalUtils.printText(String.valueOf(currentStat.getLegsCount()), t, Position.of(offset + 35, row + 3));
+            TerminalUtils.printText(String.valueOf(baseStat.getLegsCount()), t, Position.of(offset + 38, row + 3));
+        }
 
         TerminalUtils.printText(String.valueOf(currentStat.getSlowness()), t, Position.of(offset + 10, row));
         TerminalUtils.printText(String.valueOf(baseStat.getSlowness()), t, Position.of(offset + 15, row));
@@ -131,11 +146,11 @@ public final class TerminalUtils {
         printText(item.getName(), t, pos);
         printText(visitor.type, t, Position.of(pos.getColumn(), pos.getRow() + 1));
         printText("Effects", t, Position.of(pos.getColumn() + 1, pos.getRow() + 2));
-        horizontalLine(t, Position.of(pos.getColumn() + 8, pos.getRow() + 2), 30);
         verticalLine(t,  Position.of(pos.getColumn() + 1, pos.getRow() + 3), 17);
         verticalLine(t,  Position.of(pos.getColumn() + 20, pos.getRow() + 3), 17);
         verticalLine(t,  Position.of(pos.getColumn() + 38, pos.getRow() + 3), 17);
-        horizontalLine(t, Position.of(pos.getColumn() + 1, pos.getRow() + 19), 37);
+        horizontalLine(t, Position.of(pos.getColumn() + 8, pos.getRow() + 2), 30);
+        horizontalLine(t, Position.of(pos.getColumn() + 1, pos.getRow() + 20), 37);
         int p = 0;
         boolean left = true;
         for (Effect effect : visitor.passiveEffects) {

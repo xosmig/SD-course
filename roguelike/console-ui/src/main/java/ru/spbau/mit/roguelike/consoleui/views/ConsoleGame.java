@@ -4,6 +4,8 @@ import org.codetome.zircon.api.Position;
 import org.codetome.zircon.api.color.TextColorFactory;
 import org.codetome.zircon.api.terminal.Terminal;
 import ru.spbau.mit.roguelike.commons.Point;
+import ru.spbau.mit.roguelike.commons.logging.Logging;
+import ru.spbau.mit.roguelike.consoleui.LoggingHolder;
 import ru.spbau.mit.roguelike.consoleui.UserInputHolder;
 import ru.spbau.mit.roguelike.logic.visitors.action.EntityAction;
 import ru.spbau.mit.roguelike.model.units.entity.*;
@@ -11,8 +13,7 @@ import ru.spbau.mit.roguelike.model.units.game.Game;
 import ru.spbau.mit.roguelike.model.visitors.EntityVisitor;
 import ru.spbau.mit.roguelike.uicommon.views.GameView;
 import ru.spbau.mit.roguelike.uicommon.views.View;
-import ru.spbau.mit.roguelike.uicommon.views.entity.CharacterEntityView;
-import ru.spbau.mit.roguelike.uicommon.views.entity.CreepEntityView;
+import ru.spbau.mit.roguelike.uicommon.views.entity.EntityView;
 import ru.spbau.mit.roguelike.uicommon.views.inventory.InventoryView;
 
 /**
@@ -21,6 +22,7 @@ import ru.spbau.mit.roguelike.uicommon.views.inventory.InventoryView;
 public class ConsoleGame extends GameView {
     private final static int LOG_WIDTH = 23;
     private final Terminal terminal;
+    private final LoggingHolder log;
     private final int barsLen;
     private final int right;
     private final int bottom;
@@ -37,12 +39,15 @@ public class ConsoleGame extends GameView {
         bottom = terminal.getBoundableSize().getRows();
         fieldCenterX = (right - LOG_WIDTH) / 2;
         fieldCenterY = (bottom - 3) / 2;
+        log = new LoggingHolder(LOG_WIDTH, bottom - 4);
+        Logging.addHandler(log);
     }
 
     @Override
     protected void draw() {
         terminal.clear();
         drawGUIBorders();
+        writeLog();
         super.draw();
         if (freeCamera) {
             terminal.setForegroundColor(TextColorFactory.fromRGB(0, 0, 235));
@@ -50,6 +55,14 @@ public class ConsoleGame extends GameView {
             terminal.setForegroundColor(TextColorFactory.DEFAULT_FOREGROUND_COLOR);
         }
         terminal.flush();
+    }
+
+    protected void writeLog() {
+        int i = 0;
+        for (String s : log.getLog()) {
+            TerminalUtils.printText(s, terminal, Position.of(right - LOG_WIDTH, i));
+            i++;
+        }
     }
 
     protected void drawGUIBorders() {
@@ -102,6 +115,7 @@ public class ConsoleGame extends GameView {
     @Override
     protected EntityAction onPlayerAction() {
         UserInputHolder.clear(terminal);
+        log.add("~~Next turn~~");
         freeCamera = false;
         while (true) {
             try {
@@ -167,17 +181,19 @@ public class ConsoleGame extends GameView {
 
     @Override
     protected InventoryView constructInventoryView(CharacterEntity player) {
-        return new ConsoleInventory(this, player, terminal);
+        return new ConsoleInventory(this, player, () -> refreshState(player), terminal);
     }
 
     @Override
-    protected CharacterEntityView constructEntityView(CharacterEntity player) {
-        return new ConsoleCharacterView(this, player, terminal);
-    }
-
-    @Override
-    protected CreepEntityView constructEntityView(CreepEntity creep) {
-        return new ConsoleCreepView(this, creep, terminal);
+    protected EntityView constructEntityView(WorldEntity entity) {
+        String name = "";
+        if (entity instanceof CharacterEntity) {
+            name = ((CharacterEntity) entity).getName();
+        }
+        if (entity instanceof CreepEntity) {
+            name = ((CreepEntity) entity).getName();
+        }
+        return new ConsoleEntityView(this, entity, terminal, name);
     }
 
     private class EntityDrawer implements EntityVisitor {

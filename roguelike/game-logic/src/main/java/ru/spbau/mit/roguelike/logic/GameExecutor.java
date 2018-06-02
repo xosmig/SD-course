@@ -11,6 +11,7 @@ import ru.spbau.mit.roguelike.logic.visitors.effects.ApplyStateEffectVisitor;
 import ru.spbau.mit.roguelike.logic.visitors.effects.CheckEquipmentVisitor;
 import ru.spbau.mit.roguelike.model.factories.EntityFactory;
 import ru.spbau.mit.roguelike.model.factories.FieldFactory;
+import ru.spbau.mit.roguelike.model.units.effect.EffectInstance;
 import ru.spbau.mit.roguelike.model.units.entity.CharacterEntity;
 import ru.spbau.mit.roguelike.model.units.entity.CreepEntity;
 import ru.spbau.mit.roguelike.model.units.entity.StatDescriptor;
@@ -26,6 +27,7 @@ import java.util.Set;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * Executes game turn-by-turn
@@ -62,20 +64,17 @@ public class GameExecutor {
         //Firstly apply effects
         Set<WorldEntity> gameEntities = game.getEntitities();
         for (WorldEntity entity : gameEntities) {
-            boolean statsChanging = true;
-            while (statsChanging) {
-                entity.resetCurrentStatDescriptor();
-                ApplyStatEffectVisitor.process(entity);
-                Set<Equipment> dropedEquipment = CheckEquipmentVisitor.process(entity);
-                statsChanging = !dropedEquipment.isEmpty();
-                dropedEquipment.forEach(entity::removeEquipment);
-                if (entity instanceof CharacterEntity) {
-                    Inventory inventory = ((CharacterEntity) entity).getInventory();
-                    dropedEquipment.forEach(inventory::addItem);
+            refreshStatAndState(entity);
+            for (EffectInstance instance : entity.getEffectInstances().stream().collect(Collectors.toList())) {
+                instance.decreaseDuration();
+                if (instance.isEnded()) {
+                    entity.getEffectInstances().remove(instance);
                 }
             }
-            entity.resetStateDescriptor();
-            ApplyStateEffectVisitor.process(entity, game);
+            entity.getStateDescriptor().setHealth(entity.getStateDescriptor().getHealth() +
+                    entity.getStateDescriptor().getRegeneration());
+            entity.getStateDescriptor().setMana(entity.getStateDescriptor().getMana() +
+                    entity.getStateDescriptor().getManaRegeneration());
         }
         //Secondly make turn
         gameEntities = game.getEntitities();
@@ -111,9 +110,31 @@ public class GameExecutor {
                 player.setLevel(game.getWorldLevel());
             }
             if (game.getEntityById(player.getId()) == null) {
+                player.resetCurrentStatDescriptor();
+                player.resetStateDescriptor();
+                for (EffectInstance instance : player.getEffectInstances().stream().collect(Collectors.toList())) {
+                    player.removeEffectInstance(instance);
+                }
                 spawnPlayer(player);
             }
         }
+    }
+
+    public void refreshStatAndState(WorldEntity entity) {
+        boolean statsChanging = true;
+        while (statsChanging) {
+            entity.resetCurrentStatDescriptor();
+            ApplyStatEffectVisitor.process(entity);
+            Set<Equipment> dropedEquipment = CheckEquipmentVisitor.process(entity);
+            statsChanging = !dropedEquipment.isEmpty();
+            dropedEquipment.forEach(entity::removeEquipment);
+            if (entity instanceof CharacterEntity) {
+                Inventory inventory = ((CharacterEntity) entity).getInventory();
+                dropedEquipment.forEach(inventory::addItem);
+            }
+        }
+        entity.resetStateDescriptor();
+        ApplyStateEffectVisitor.process(entity, game);
     }
 
     public Game getGame() {

@@ -1,13 +1,17 @@
 package ru.spbau.mit.roguelike.uicommon.views.inventory;
 
 import ru.spbau.mit.roguelike.model.units.entity.CharacterEntity;
+import ru.spbau.mit.roguelike.model.units.entity.StatDescriptor;
+import ru.spbau.mit.roguelike.model.units.entity.StateDescriptor;
 import ru.spbau.mit.roguelike.model.units.entity.inventory.Inventory;
 import ru.spbau.mit.roguelike.model.units.item.Item;
 import ru.spbau.mit.roguelike.model.units.item.equipment.*;
 import ru.spbau.mit.roguelike.model.visitors.ItemVisitor;
 import ru.spbau.mit.roguelike.uicommon.views.View;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -19,28 +23,43 @@ public abstract class InventoryView extends View {
     private final List<Item> inventoryItems;
     private final List<Equipment> playerEquipment;
     private final UseItemVisitor useItemVisitor = new UseItemVisitor();
+    private final Runnable onEntityEquipmentChange;
     private int inventoryPosition = 0;
     private int equipmentPosition = 0;
     private boolean scrollingEquipment = true;
 
-    public InventoryView(View parentView, CharacterEntity entity) {
+    public InventoryView(View parentView, CharacterEntity entity, Runnable onEntityEquipmentChange) {
         super(parentView);
         this.entity = entity;
         inventory = entity.getInventory();
+        this.onEntityEquipmentChange = onEntityEquipmentChange;
         this.inventoryItems = inventory.getItems().stream().collect(Collectors.toList());
         this.playerEquipment = entity.getEquipment().stream().collect(Collectors.toList());
     }
 
     @Override
     protected void draw() {
-        drawInventory(inventoryItems);
-        drawEquipment(playerEquipment);
+        drawStat(entity.getCurrentStatDescriptor(), entity.getBaseStatDescriptor());
+        drawState(entity.getStateDescriptor(), entity.getCurrentStatDescriptor().generateStateDescriptor());
+        if (!inventoryItems.isEmpty()) {
+            drawInventory(inventoryItems.subList(inventoryPosition, inventoryItems.size()));
+        }
+        if (!playerEquipment.isEmpty()) {
+            drawEquipment(playerEquipment.subList(equipmentPosition, playerEquipment.size()));
+        }
     }
 
     protected final void useSelectedItem() {
         if (!inventoryItems.isEmpty()) {
             inventoryItems.get(inventoryPosition).accept(useItemVisitor);
         }
+        onEntityEquipmentChange.run();
+        Set<Equipment> dropedEquipment = playerEquipment.stream().filter(eq -> !entity.getEquipment().contains(eq))
+                .collect(Collectors.toSet());
+        inventoryItems.addAll(dropedEquipment);
+        playerEquipment.removeAll(dropedEquipment);
+        equipmentPosition = Math.max(playerEquipment.size() - 1, equipmentPosition);
+        draw();
     }
 
     protected final void unequipSelectedEquipment() {
@@ -52,6 +71,7 @@ public abstract class InventoryView extends View {
         inventoryItems.add(source);
         inventory.addItem(source);
         equipmentPosition = Math.max(equipmentPosition, Math.min(0, playerEquipment.size() - 1));
+        onEntityEquipmentChange.run();
         draw();
     }
 
@@ -60,10 +80,12 @@ public abstract class InventoryView extends View {
             inventory.removeItem(inventoryItems.remove(inventoryPosition));
             inventoryPosition = Math.max(inventoryPosition, Math.min(0, inventoryItems.size() - 1));
         }
+        draw();
     }
 
     protected final void swapScrolling() {
         scrollingEquipment = !scrollingEquipment;
+        draw();
     }
 
     public boolean isScrollingEquipment() {
@@ -98,7 +120,8 @@ public abstract class InventoryView extends View {
         }
     }
 
-
+    protected abstract void drawStat(StatDescriptor current, StatDescriptor base);
+    protected abstract void drawState(StateDescriptor current, StateDescriptor currentStatDefault);
     protected abstract void drawEquipment(List<Equipment> equipment);
     protected abstract void drawInventory(List<Item> items);
 
@@ -108,10 +131,10 @@ public abstract class InventoryView extends View {
     private class UseItemVisitor implements ItemVisitor {
         private void processEquipment(Equipment e) {
             entity.addEquipment(e);
+            playerEquipment.add(e);
             inventoryItems.remove(e);
             inventory.removeItem(e);
-            inventoryPosition = Math.max(inventoryPosition, Math.min(0, inventoryItems.size()));
-            draw();
+            inventoryPosition = Math.max(inventoryPosition, Math.min(0, inventoryItems.size() - 1));
         }
 
         @Override

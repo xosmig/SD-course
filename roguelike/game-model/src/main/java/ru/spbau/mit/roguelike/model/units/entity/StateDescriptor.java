@@ -1,5 +1,6 @@
 package ru.spbau.mit.roguelike.model.units.entity;
 
+import ru.spbau.mit.roguelike.commons.Configuration;
 import ru.spbau.mit.roguelike.commons.Savable;
 
 /**
@@ -35,7 +36,7 @@ public class StateDescriptor implements Savable {
     }
 
     public StateDescriptor setHealth(int health) {
-        this.health = Math.max(0, Math.min(health, control.getStamina() * 2));
+        this.health = Math.max(0, Math.min(health, control.getStamina() * Configuration.getInt("STATS_STAMINA_TO_HP")));
         return this;
     }
 
@@ -53,7 +54,7 @@ public class StateDescriptor implements Savable {
     }
 
     public StateDescriptor setMana(int mana) {
-        this.mana = Math.max(0, Math.min(mana, control.getWisdom() * 2));
+        this.mana = Math.max(0, Math.min(mana, control.getWisdom() * Configuration.getInt("STATS_WISDOM_TO_MP")));
         return this;
     }
 

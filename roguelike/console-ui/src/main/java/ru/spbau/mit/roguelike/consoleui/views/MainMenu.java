@@ -3,6 +3,7 @@ package ru.spbau.mit.roguelike.consoleui.views;
 import org.codetome.zircon.api.Position;
 import org.codetome.zircon.api.input.KeyStroke;
 import org.codetome.zircon.api.terminal.Terminal;
+import ru.spbau.mit.roguelike.consoleui.LoggingHolder;
 import ru.spbau.mit.roguelike.consoleui.UserInputHolder;
 import ru.spbau.mit.roguelike.model.units.entity.CharacterEntity;
 import ru.spbau.mit.roguelike.uicommon.views.MainMenuView;
@@ -54,12 +55,10 @@ public class MainMenu extends MainMenuView {
 
     @Override
     protected void draw(TextButton b) {
-        terminal.putCursorAt(Position.of(
+        terminal.clear();
+        TerminalUtils.printText(b.getText(), terminal, Position.of(
                 (terminal.getBoundableSize().getColumns() - b.getText().length()) / 2,
                 terminal.getBoundableSize().getRows() / 2));
-        for (char c: b.getText().toCharArray()) {
-            terminal.putCharacter(c);
-        }
         terminal.flush();
     }
 }

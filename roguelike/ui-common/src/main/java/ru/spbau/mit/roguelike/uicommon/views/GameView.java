@@ -7,8 +7,6 @@ import ru.spbau.mit.roguelike.logic.visitors.action.EntityAction;
 import ru.spbau.mit.roguelike.model.units.entity.*;
 import ru.spbau.mit.roguelike.model.units.game.Game;
 import ru.spbau.mit.roguelike.model.visitors.EntityVisitor;
-import ru.spbau.mit.roguelike.uicommon.views.entity.CharacterEntityView;
-import ru.spbau.mit.roguelike.uicommon.views.entity.CreepEntityView;
 import ru.spbau.mit.roguelike.uicommon.views.entity.EntityView;
 import ru.spbau.mit.roguelike.uicommon.views.inventory.InventoryView;
 
@@ -23,7 +21,7 @@ public abstract class GameView extends View {
     private boolean exit = false;
     private Point cameraPosition;
     private Point playerPosition;
-    private long millisPerTurn = 50;
+    private long millisPerTurn = 25;
 
 
     public GameView(View parentView, CharacterEntity player) {
@@ -41,14 +39,17 @@ public abstract class GameView extends View {
         return onPlayerAction();
     }
 
+    protected void refreshState(WorldEntity entity){
+        game.refreshStatAndState(entity);
+    }
+
     protected abstract void drawStats(StatDescriptor currentStat, StatDescriptor baseStat);
     protected abstract void drawState(StateDescriptor currentState, StateDescriptor ultState);
     protected abstract void drawField(Point cameraPosition, Game game);
     protected abstract void drawNameAndLevel(String name, int level);
     protected abstract EntityAction onPlayerAction();
     protected abstract InventoryView constructInventoryView(CharacterEntity player);
-    protected abstract CharacterEntityView constructEntityView(CharacterEntity player);
-    protected abstract CreepEntityView constructEntityView(CreepEntity creep);
+    protected abstract EntityView constructEntityView(WorldEntity player);
 
     protected void moveCamera(Point delta) {
         cameraPosition = Point.of(cameraPosition.getX() + delta.getX(), cameraPosition.getY() + delta.getY());

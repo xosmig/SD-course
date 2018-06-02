@@ -15,15 +15,15 @@ import java.util.stream.Collectors;
 /**
  * Abstract entity viewer
  */
-public abstract class EntityView<T extends WorldEntity> extends View {
-    final T entity;
+public abstract class EntityView extends View {
+    protected final WorldEntity entity;
     private final List<EffectInstance> effects;
     private final List<Equipment> equipment;
     private boolean scrollingEffects = true;
     private int effectsPosition = 0;
     private int equipmentPosition = 0;
 
-    public EntityView(View parentView, T entity) {
+    public EntityView(View parentView, WorldEntity entity) {
         super(parentView);
         this.entity = entity;
         this.effects = this.entity.getEffectInstances().stream()
@@ -46,6 +46,7 @@ public abstract class EntityView<T extends WorldEntity> extends View {
 
     protected final void swapScrolling() {
         scrollingEffects = !scrollingEffects;
+        draw();
     }
 
     public boolean isScrollingEffects() {

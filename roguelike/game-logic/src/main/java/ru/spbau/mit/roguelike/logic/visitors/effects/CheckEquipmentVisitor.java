@@ -9,6 +9,7 @@ import ru.spbau.mit.roguelike.model.visitors.ItemVisitor;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Checks that entity's stat matches equipment requirements
@@ -26,6 +27,8 @@ public class CheckEquipmentVisitor implements ItemVisitor {
         if (entity.getCurrentStatDescriptor() != null) {
             CheckEquipmentVisitor visitor = new CheckEquipmentVisitor(entity.getCurrentStatDescriptor());
             entity.getEquipment().forEach(eq -> eq.accept(visitor));
+            visitor.getDropedEquipment().addAll(entity.getEquipment().stream()
+                    .filter(eq -> eq.getLevel() > entity.getLevel()).collect(Collectors.toList()));
             return visitor.getDropedEquipment();
         }
         return Collections.emptySet();
@@ -49,7 +52,7 @@ public class CheckEquipmentVisitor implements ItemVisitor {
 
     @Override
     public void visit(HandArmor item) {
-        if (handsForArmorUsed > entityStat.getHandsCount()) {
+        if (handsForArmorUsed >= entityStat.getHandsCount()) {
             dropedEquipment.add(item);
         }
         handsForArmorUsed++;
@@ -57,7 +60,7 @@ public class CheckEquipmentVisitor implements ItemVisitor {
 
     @Override
     public void visit(HeadArmor item) {
-        if (headsUsed > entityStat.getHandsCount()) {
+        if (headsUsed >= entityStat.getHeadsCount()) {
             dropedEquipment.add(item);
         }
         headsUsed++;
@@ -65,7 +68,7 @@ public class CheckEquipmentVisitor implements ItemVisitor {
 
     @Override
     public void visit(LegArmor item) {
-        if (legsUsed > entityStat.getHandsCount()) {
+        if (legsUsed >= entityStat.getLegsCount()) {
             dropedEquipment.add(item);
         }
         legsUsed++;
@@ -73,7 +76,7 @@ public class CheckEquipmentVisitor implements ItemVisitor {
 
     @Override
     public void visit(Weapon item) {
-        if (handsForWeaponUsed > entityStat.getHandsCount()) {
+        if (handsForWeaponUsed >= entityStat.getHandsCount()) {
             dropedEquipment.add(item);
         }
         handsForWeaponUsed++;

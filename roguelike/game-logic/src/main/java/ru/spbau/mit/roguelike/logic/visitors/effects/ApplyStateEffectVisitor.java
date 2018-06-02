@@ -1,6 +1,11 @@
 package ru.spbau.mit.roguelike.logic.visitors.effects;
 
+import ru.spbau.mit.roguelike.commons.Point;
+import ru.spbau.mit.roguelike.commons.logging.Event;
+import ru.spbau.mit.roguelike.commons.logging.Logging;
+import ru.spbau.mit.roguelike.model.factories.EntityFactory;
 import ru.spbau.mit.roguelike.model.units.effect.*;
+import ru.spbau.mit.roguelike.model.units.entity.CreepEntity;
 import ru.spbau.mit.roguelike.model.units.entity.StatDescriptor;
 import ru.spbau.mit.roguelike.model.units.entity.StateDescriptor;
 import ru.spbau.mit.roguelike.model.units.entity.WorldEntity;
@@ -13,15 +18,15 @@ public class ApplyStateEffectVisitor extends ApplyEffectVisitor {
     private final StateDescriptor state;
 
     public static void process(WorldEntity target, Game game) {
-        if (target.getStateDescriptor() != null) {
-            new ApplyStateEffectVisitor(target).process();
-            if (target.getStateDescriptor().getHealth() == 0) {
-                game.removeEntity(target.getId());
+        new ApplyStateEffectVisitor(target).process();
+        if (target.getStateDescriptor().getHealth() == 0) {
+            Logging.log(new Event(game.getEntityPositionById(target.getId()), "Someone died"));
+            Point position = game.getEntityPositionById(target.getId());
+            game.removeEntity(target.getId());
+            game.moveOrSpawnEntity(position, EntityFactory.getDrop(target.getLevel()));
+            if (target instanceof CreepEntity) {
+                game.increaseWorldExp(target.getLevel());
             }
-            target.getStateDescriptor().setHealth(target.getStateDescriptor().getHealth() +
-                    target.getStateDescriptor().getRegeneration());
-            target.getStateDescriptor().setMana(target.getStateDescriptor().getMana() +
-                    target.getStateDescriptor().getManaRegeneration());
         }
     }
 
