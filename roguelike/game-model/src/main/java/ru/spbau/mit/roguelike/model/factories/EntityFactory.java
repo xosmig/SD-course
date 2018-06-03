@@ -30,11 +30,14 @@ public final class EntityFactory {
         return new BarrierEntity(new StatDescriptor(), 0, true);
     }
 
+    public static BarrierEntity getBounty(int level) {
+        return new BarrierEntity(new StatDescriptor(), level, false);
+    }
+
     public static DropEntity getDrop(int level) {
         int count = RandomUtils.getInt(1, Configuration.getInt("ENTITY_FACTORY_DROP_MAX_COUNT"));
         double levelFactor = Configuration.getDouble("ENTITY_FACTORY_DROP_LEVEL_FACTOR");
         Set<Item> dropContent = new HashSet<>();
-
         for (int i = 0; i < count; i++) {
             dropContent.add(ItemFactory.getItem(
                     RandomUtils.getInt(Math.max(1, (int)(level * (1. - levelFactor))), (int)(level * (1. + levelFactor)))

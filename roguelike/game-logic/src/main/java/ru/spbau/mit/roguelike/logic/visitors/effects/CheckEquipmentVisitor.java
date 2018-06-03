@@ -29,6 +29,10 @@ public class CheckEquipmentVisitor implements ItemVisitor {
             entity.getEquipment().forEach(eq -> eq.accept(visitor));
             visitor.getDropedEquipment().addAll(entity.getEquipment().stream()
                     .filter(eq -> eq.getLevel() > entity.getLevel()).collect(Collectors.toList()));
+            visitor.entityStat.setHandsCount(visitor.entityStat.getHeadsCount() - visitor.headsUsed);
+            visitor.entityStat.setLegsCount(visitor.entityStat.getLegsCount() - visitor.legsUsed);
+            visitor.entityStat.setHandsCount(visitor.entityStat.getHandsCount()
+                    - Math.min(visitor.handsForArmorUsed, visitor.handsForWeaponUsed));
             return visitor.getDropedEquipment();
         }
         return Collections.emptySet();

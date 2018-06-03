@@ -13,6 +13,7 @@ import ru.spbau.mit.roguelike.model.units.entity.CharacterEntity;
 import ru.spbau.mit.roguelike.model.units.entity.CreepEntity;
 import ru.spbau.mit.roguelike.model.units.entity.DropEntity;
 import ru.spbau.mit.roguelike.model.units.game.Cell;
+import ru.spbau.mit.roguelike.model.units.game.EmptyCell;
 import ru.spbau.mit.roguelike.model.units.game.Field;
 import ru.spbau.mit.roguelike.model.units.game.Game;
 import ru.spbau.mit.roguelike.model.units.item.equipment.Weapon;
@@ -40,7 +41,13 @@ public class BattleTargetEntityVisitorTest {
 
     @Before
     public void before() {
-        game = new Game(new Field(new Cell[92][92], 90, 90));
+        Cell[][] cells = new Cell[92][92];
+        for (int i = 0; i < 92; i++) {
+            for (int j = 0; j < 92; j++) {
+                cells[i][j] = new EmptyCell();
+            }
+        }
+        game = new Game(new Field(cells, 90, 90));
         CharacterEntity weekCharacter = EntityFactory.getCharacter("Week");
 
         CreepEntity weekCreep = EntityFactory.getCreep(1);

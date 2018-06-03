@@ -55,14 +55,14 @@ public class MakeTurnEntityVisitor implements EntityVisitor {
                 break;
             }
             case LEFT: {
-                if (targetPoint.getY() == 1) {
+                if (targetPoint.getX() == 1) {
                     return;
                 }
                 targetPoint = Point.of(targetPoint.getX() - 1, targetPoint.getY());
                 break;
             }
             case RIGHT: {
-                if (targetPoint.getY() == world.getHeight()) {
+                if (targetPoint.getX() == world.getWidth()) {
                     return;
                 }
                 targetPoint = Point.of(targetPoint.getX() + 1, targetPoint.getY());

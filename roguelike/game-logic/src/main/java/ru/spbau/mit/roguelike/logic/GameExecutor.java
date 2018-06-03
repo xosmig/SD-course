@@ -12,10 +12,7 @@ import ru.spbau.mit.roguelike.logic.visitors.effects.CheckEquipmentVisitor;
 import ru.spbau.mit.roguelike.model.factories.EntityFactory;
 import ru.spbau.mit.roguelike.model.factories.FieldFactory;
 import ru.spbau.mit.roguelike.model.units.effect.EffectInstance;
-import ru.spbau.mit.roguelike.model.units.entity.CharacterEntity;
-import ru.spbau.mit.roguelike.model.units.entity.CreepEntity;
-import ru.spbau.mit.roguelike.model.units.entity.StatDescriptor;
-import ru.spbau.mit.roguelike.model.units.entity.WorldEntity;
+import ru.spbau.mit.roguelike.model.units.entity.*;
 import ru.spbau.mit.roguelike.model.units.entity.inventory.Inventory;
 import ru.spbau.mit.roguelike.model.units.game.Game;
 import ru.spbau.mit.roguelike.model.units.item.equipment.Equipment;
@@ -92,19 +89,35 @@ public class GameExecutor {
 
         game.getEntitities().stream().filter(e -> e instanceof CreepEntity)
                 .collect(Collectors.toList()).forEach(e -> {
-                    if (e.getLevel() < (int)(Configuration.getDouble("GAME_LOW_LEVEL_MONSTER_FACTOR") *
-                            game.getWorldLevel()) && RandomUtils
+                    if (e.getLevel() < Configuration.getDouble("GAME_LOW_LEVEL_MONSTER_FACTOR") *
+                            game.getWorldLevel() && RandomUtils
                             .getBoolean(Configuration.getDouble("GAME_LOW_LEVEL_MONSTER_DISAPPEAR_PROBABILITY"))) {
-                        CreepEntity newCreep = EntityFactory.getCreep(game.getWorldLevel());
-                        Point position = game.getEntityPositionById(e.getId());
                         game.removeEntity(e.getId());
                     }
         });
+
+        game.getEntitities().stream().filter(e -> e instanceof BarrierEntity && !((BarrierEntity) e).isImmortal())
+                .collect(Collectors.toList()).forEach(e -> {
+            if (e.getLevel() < game.getWorldLevel()) {
+                BarrierEntity instead = EntityFactory.getBounty(game.getWorldLevel());
+                Point position = game.getEntityPositionById(e.getId());
+                game.removeEntity(e.getId());
+                game.moveOrSpawnEntity(position, instead);
+            }
+        });
+
         long monsterCount = Configuration.getInt("GAME_MONSTERS_COUNT") -
                 game.getEntitities().stream().filter(e -> e instanceof CreepEntity).count();
         while (monsterCount > 0) {
             spawnCreep();
             monsterCount--;
+        }
+
+        long bountyCount = Configuration.getInt("GAME_BOUNTY_COUNT") - game.getEntitities().stream()
+                .filter(e -> e instanceof BarrierEntity && !((BarrierEntity) e).isImmortal()).count();
+        while (bountyCount > 0) {
+            spawnBounty();
+            bountyCount--;
         }
 
         for (CharacterEntity player : players) {
@@ -155,5 +168,11 @@ public class GameExecutor {
         CreepEntity creep = EntityFactory.getCreep(game.getWorldLevel());
         while (!game.moveOrSpawnEntity(RandomUtils.getPoint(game.getWidth(), game.getHeight()), creep)) {}
         id2lastTurn.put(creep.getId(), turn);
+    }
+
+    private void spawnBounty() {
+        BarrierEntity bounty = EntityFactory.getBounty(game.getWorldLevel());
+        while (!game.moveOrSpawnEntity(RandomUtils.getPoint(game.getWidth(), game.getHeight()), bounty)) {}
+        id2lastTurn.put(bounty.getId(), turn);
     }
 }

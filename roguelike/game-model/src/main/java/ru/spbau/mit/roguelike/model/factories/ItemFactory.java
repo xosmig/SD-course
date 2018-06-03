@@ -173,7 +173,7 @@ public final class ItemFactory {
                     RandomUtils.getBoolean(Configuration.getDouble("ITEM_FACTORY_HEAVY_PROBABILITY"))) {
 
                 description.heavy = new StatsEffect(0, Configuration.get("ITEM_FACTORY_HEAVY_EFFECT_NAME"),
-                        0, level / 2, 0, 0, 0, 0, level / 10);
+                        0, -level / 2, 0, 0, 0, 0, level / 10);
                 description.realLevel += level;
                 description.totalEffects.add(description.heavy);
             }

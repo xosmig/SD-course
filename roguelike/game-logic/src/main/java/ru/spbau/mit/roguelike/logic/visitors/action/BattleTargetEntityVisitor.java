@@ -35,7 +35,7 @@ public class BattleTargetEntityVisitor implements EntityVisitor {
 
     @Override
     public void visit(BarrierEntity entity) {
-        if (!entity.isImmortal()) {
+        if (!entity.isImmortal() && attacker instanceof CharacterEntity) {
             attack(attacker, entity, "bounty chest");
         }
     }

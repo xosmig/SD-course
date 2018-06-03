@@ -203,11 +203,19 @@ public class ConsoleGame extends GameView {
 
         @Override
         public void visit(BarrierEntity entity) {
-            terminal.setForegroundColor(TextColorFactory.fromRGB(0, 0, 0));
-            terminal.setBackgroundColor(TextColorFactory.fromRGB(90, 90, 90));
-            terminal.setCharacterAt(position, '#');
-            terminal.setForegroundColor(TextColorFactory.DEFAULT_FOREGROUND_COLOR);
-            terminal.setBackgroundColor(TextColorFactory.DEFAULT_BACKGROUND_COLOR);
+            if (entity.isImmortal()) {
+                terminal.setForegroundColor(TextColorFactory.fromRGB(0, 0, 0));
+                terminal.setBackgroundColor(TextColorFactory.fromRGB(90, 90, 90));
+                terminal.setCharacterAt(position, '#');
+                terminal.setForegroundColor(TextColorFactory.DEFAULT_FOREGROUND_COLOR);
+                terminal.setBackgroundColor(TextColorFactory.DEFAULT_BACKGROUND_COLOR);
+            } else {
+                terminal.setForegroundColor(TextColorFactory.fromRGB(200, 200, 0));
+                terminal.setBackgroundColor(TextColorFactory.fromRGB(90, 90, 90));
+                terminal.setCharacterAt(position, '?');
+                terminal.setForegroundColor(TextColorFactory.DEFAULT_FOREGROUND_COLOR);
+                terminal.setBackgroundColor(TextColorFactory.DEFAULT_BACKGROUND_COLOR);
+            }
         }
 
         @Override
