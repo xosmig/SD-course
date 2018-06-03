@@ -31,18 +31,26 @@ public final class CreepAI {
                 game.visitEntityAt(Point.of(position.getX() - dx, position.getY() - dy), targetSelectionVisitor);
             }
         }
+        //TODO find shortest path
         if (targetSelectionVisitor.delta != null) {
-            variants.clear();
+            if (Math.abs(targetSelectionVisitor.delta.getX()) == 1 ||
+                    Math.abs(targetSelectionVisitor.delta.getY()) == 1) {
+                variants.clear();
+            }
             if (targetSelectionVisitor.delta.getX() < 0) {
+                variants.add(EntityAction.LEFT);
                 variants.add(EntityAction.LEFT);
             }
             if (targetSelectionVisitor.delta.getX() > 0) {
                 variants.add(EntityAction.RIGHT);
+                variants.add(EntityAction.RIGHT);
             }
             if (targetSelectionVisitor.delta.getY() < 0) {
                 variants.add(EntityAction.UP);
+                variants.add(EntityAction.UP);
             }
             if (targetSelectionVisitor.delta.getY() > 0) {
+                variants.add(EntityAction.DOWN);
                 variants.add(EntityAction.DOWN);
             }
         }
@@ -61,9 +69,7 @@ public final class CreepAI {
         }
 
         @Override
-        public void visit(BarrierEntity entity) {
-
-        }
+        public void visit(BarrierEntity entity) {}
 
         @Override
         public void visit(CharacterEntity entity) {

@@ -144,6 +144,7 @@ public final class TerminalUtils {
         PrintItemVisitor visitor = new PrintItemVisitor();
         item.accept(visitor);
         printText(item.getName(), t, pos);
+        printText("LVL: " + item.getLevel(), t, Position.of(pos.getColumn() + 30, pos.getRow()));
         printText(visitor.type, t, Position.of(pos.getColumn(), pos.getRow() + 1));
         printText("Effects", t, Position.of(pos.getColumn() + 1, pos.getRow() + 2));
         verticalLine(t,  Position.of(pos.getColumn() + 1, pos.getRow() + 3), 17);

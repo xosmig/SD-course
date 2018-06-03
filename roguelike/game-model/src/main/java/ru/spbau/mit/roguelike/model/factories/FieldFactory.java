@@ -143,23 +143,33 @@ public final class FieldFactory {
         }
     }
 
-    //TODO sometimes stack overflows here. Use bfs instead of dfs
     private static void paintCells(int height, int width, Point p, Cell[][] field, Set<Point> painted) {
-        if (painted.contains(p)) {
-            return;
-        }
+        LinkedList<Point> points = new LinkedList<>();
+        points.add(p);
         painted.add(p);
-        if (p.getX() > 0 && field[p.getX() - 1][p.getY()] instanceof EmptyCell) {
-            paintCells(height, width, Point.of(p.getX() - 1, p.getY()), field, painted);
-        }
-        if (p.getX() < width + 1 && field[p.getX() + 1][p.getY()] instanceof EmptyCell) {
-            paintCells(height, width, Point.of(p.getX() + 1, p.getY()), field, painted);
-        }
-        if (p.getY() > 0 && field[p.getX()][p.getY() - 1] instanceof EmptyCell) {
-            paintCells(height, width, Point.of(p.getX(), p.getY() - 1), field, painted);
-        }
-        if (p.getY() < height + 1 && field[p.getX()][p.getY() + 1] instanceof EmptyCell) {
-            paintCells(height, width, Point.of(p.getX(), p.getY() + 1), field, painted);
+        while (!points.isEmpty()) {
+            Point target;
+            p = points.poll();
+            target = Point.of(p.getX() - 1, p.getY());
+            if (p.getX() > 0 && field[p.getX() - 1][p.getY()] instanceof EmptyCell && !painted.contains(target)) {
+                points.add(target);
+                painted.add(target);
+            }
+            target = Point.of(p.getX() + 1, p.getY());
+            if (p.getX() < width + 1 && field[p.getX() + 1][p.getY()] instanceof EmptyCell && !painted.contains(target)) {
+                points.add(target);
+                painted.add(target);
+            }
+            target = Point.of(p.getX(), p.getY() - 1);
+            if (p.getY() > 0 && field[p.getX()][p.getY() - 1] instanceof EmptyCell && !painted.contains(target)) {
+                points.add(target);
+                painted.add(target);
+            }
+            target = Point.of(p.getX(), p.getY() + 1);
+            if (p.getY() < height + 1 && field[p.getX()][p.getY() + 1] instanceof EmptyCell && !painted.contains(target)) {
+                points.add(target);
+                painted.add(target);
+            }
         }
     }
 

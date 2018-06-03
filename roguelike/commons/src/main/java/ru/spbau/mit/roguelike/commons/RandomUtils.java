@@ -27,7 +27,7 @@ public final class RandomUtils {
         if (right == left) {
             return right;
         }
-        return random.nextInt(right - left) + left;
+        return random.nextInt(right - left + 1) + left;
     }
 
     public static double getDouble(double left, double right) {

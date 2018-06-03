@@ -90,6 +90,16 @@ public class GameExecutor {
             }
         }
 
+        game.getEntitities().stream().filter(e -> e instanceof CreepEntity)
+                .collect(Collectors.toList()).forEach(e -> {
+                    if (e.getLevel() < (int)(Configuration.getDouble("GAME_LOW_LEVEL_MONSTER_FACTOR") *
+                            game.getWorldLevel()) && RandomUtils
+                            .getBoolean(Configuration.getDouble("GAME_LOW_LEVEL_MONSTER_DISAPPEAR_PROBABILITY"))) {
+                        CreepEntity newCreep = EntityFactory.getCreep(game.getWorldLevel());
+                        Point position = game.getEntityPositionById(e.getId());
+                        game.removeEntity(e.getId());
+                    }
+        });
         long monsterCount = Configuration.getInt("GAME_MONSTERS_COUNT") -
                 game.getEntitities().stream().filter(e -> e instanceof CreepEntity).count();
         while (monsterCount > 0) {
