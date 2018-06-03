@@ -3,7 +3,6 @@ package ru.spbau.mit.roguelike.logic;
 import ru.spbau.mit.roguelike.commons.Configuration;
 import ru.spbau.mit.roguelike.commons.Point;
 import ru.spbau.mit.roguelike.commons.RandomUtils;
-import ru.spbau.mit.roguelike.logic.visitors.action.BattleTargetEntityVisitor;
 import ru.spbau.mit.roguelike.logic.visitors.action.EntityAction;
 import ru.spbau.mit.roguelike.logic.visitors.action.MakeTurnEntityVisitor;
 import ru.spbau.mit.roguelike.logic.visitors.effects.ApplyStatEffectVisitor;
@@ -21,8 +20,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.BiFunction;
-import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 

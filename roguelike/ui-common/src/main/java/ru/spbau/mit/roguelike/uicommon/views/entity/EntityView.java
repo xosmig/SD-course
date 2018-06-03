@@ -1,6 +1,5 @@
 package ru.spbau.mit.roguelike.uicommon.views.entity;
 
-import ru.spbau.mit.roguelike.model.units.effect.Effect;
 import ru.spbau.mit.roguelike.model.units.effect.EffectInstance;
 import ru.spbau.mit.roguelike.model.units.entity.StatDescriptor;
 import ru.spbau.mit.roguelike.model.units.entity.StateDescriptor;

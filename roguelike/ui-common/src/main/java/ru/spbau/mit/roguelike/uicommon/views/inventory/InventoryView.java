@@ -9,7 +9,6 @@ import ru.spbau.mit.roguelike.model.units.item.equipment.*;
 import ru.spbau.mit.roguelike.model.visitors.ItemVisitor;
 import ru.spbau.mit.roguelike.uicommon.views.View;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;

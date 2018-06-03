@@ -1,7 +1,6 @@
 package ru.spbau.mit.roguelike.uicommon.views;
 
 import ru.spbau.mit.roguelike.commons.Point;
-import ru.spbau.mit.roguelike.commons.Savable;
 import ru.spbau.mit.roguelike.logic.GameExecutor;
 import ru.spbau.mit.roguelike.logic.visitors.action.EntityAction;
 import ru.spbau.mit.roguelike.model.units.entity.*;

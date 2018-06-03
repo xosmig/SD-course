@@ -3,7 +3,6 @@ package ru.spbau.mit.roguelike.logic.visitors.effects;
 import ru.spbau.mit.roguelike.model.units.entity.StatDescriptor;
 import ru.spbau.mit.roguelike.model.units.entity.WorldEntity;
 import ru.spbau.mit.roguelike.model.units.item.equipment.*;
-import ru.spbau.mit.roguelike.model.visitors.EntityVisitor;
 import ru.spbau.mit.roguelike.model.visitors.ItemVisitor;
 
 import java.util.Collections;

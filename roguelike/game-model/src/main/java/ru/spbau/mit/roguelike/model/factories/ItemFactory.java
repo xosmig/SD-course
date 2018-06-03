@@ -4,7 +4,6 @@ import ru.spbau.mit.roguelike.commons.Configuration;
 import ru.spbau.mit.roguelike.commons.RandomUtils;
 import ru.spbau.mit.roguelike.commons.logging.Logging;
 import ru.spbau.mit.roguelike.model.units.effect.*;
-import ru.spbau.mit.roguelike.model.units.game.Game;
 import ru.spbau.mit.roguelike.model.units.item.Item;
 import ru.spbau.mit.roguelike.model.units.item.equipment.*;
 

@@ -6,7 +6,6 @@ import ru.spbau.mit.roguelike.commons.logging.Logging;
 import ru.spbau.mit.roguelike.model.factories.EntityFactory;
 import ru.spbau.mit.roguelike.model.units.effect.*;
 import ru.spbau.mit.roguelike.model.units.entity.CreepEntity;
-import ru.spbau.mit.roguelike.model.units.entity.StatDescriptor;
 import ru.spbau.mit.roguelike.model.units.entity.StateDescriptor;
 import ru.spbau.mit.roguelike.model.units.entity.WorldEntity;
 import ru.spbau.mit.roguelike.model.units.game.Game;

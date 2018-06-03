@@ -1,11 +1,5 @@
 package ru.spbau.mit.roguelike.commons.logging;
 
-import ru.spbau.mit.roguelike.commons.Point;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Supplier;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -14,8 +8,6 @@ import java.util.logging.Logger;
  * Logging utils. Logs everything that happens in the game
  */
 public final class Logging {
-    //private final static AtomicInteger ID_PROVIDER = new AtomicInteger();
-    //private final static Map<Integer, Logger> id2logger = new HashMap<>();
     //TODO logger by id
     private final static Logger logger = Logger.getAnonymousLogger();
     static {

@@ -1,6 +1,5 @@
 package ru.spbau.mit.roguelike.logic.visitors.effects;
 
-import ru.spbau.mit.roguelike.model.units.effect.Effect;
 import ru.spbau.mit.roguelike.model.units.effect.EffectInstance;
 import ru.spbau.mit.roguelike.model.units.entity.WorldEntity;
 import ru.spbau.mit.roguelike.model.visitors.EffectVisitor;

@@ -5,7 +5,6 @@ import org.codetome.zircon.api.terminal.Terminal;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Queue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 

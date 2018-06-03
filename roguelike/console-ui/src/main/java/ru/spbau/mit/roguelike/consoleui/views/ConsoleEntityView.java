@@ -6,7 +6,6 @@ import org.codetome.zircon.api.terminal.Terminal;
 import ru.spbau.mit.roguelike.commons.logging.Logging;
 import ru.spbau.mit.roguelike.consoleui.UserInputHolder;
 import ru.spbau.mit.roguelike.model.units.effect.EffectInstance;
-import ru.spbau.mit.roguelike.model.units.entity.CreepEntity;
 import ru.spbau.mit.roguelike.model.units.entity.StatDescriptor;
 import ru.spbau.mit.roguelike.model.units.entity.StateDescriptor;
 import ru.spbau.mit.roguelike.model.units.entity.WorldEntity;

@@ -5,7 +5,6 @@ import org.junit.Test;
 import ru.spbau.mit.roguelike.commons.Point;
 import ru.spbau.mit.roguelike.model.factories.EffectFactory;
 import ru.spbau.mit.roguelike.model.factories.EntityFactory;
-import ru.spbau.mit.roguelike.model.factories.FieldFactory;
 import ru.spbau.mit.roguelike.model.units.effect.Effect;
 import ru.spbau.mit.roguelike.model.units.effect.EffectInstance;
 import ru.spbau.mit.roguelike.model.units.entity.BarrierEntity;
@@ -18,7 +17,6 @@ import ru.spbau.mit.roguelike.model.units.game.Field;
 import ru.spbau.mit.roguelike.model.units.game.Game;
 import ru.spbau.mit.roguelike.model.units.item.equipment.Weapon;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 

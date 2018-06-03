@@ -2,7 +2,6 @@ package ru.spbau.mit.roguelike.uicommon.views;
 
 import ru.spbau.mit.roguelike.model.factories.EntityFactory;
 import ru.spbau.mit.roguelike.model.units.entity.CharacterEntity;
-import ru.spbau.mit.roguelike.uicommon.views.elements.Button;
 import ru.spbau.mit.roguelike.uicommon.views.elements.TextButton;
 
 /**

@@ -3,7 +3,6 @@ package ru.spbau.mit.roguelike.logic.visitors.effects;
 import ru.spbau.mit.roguelike.model.units.effect.*;
 import ru.spbau.mit.roguelike.model.units.entity.StatDescriptor;
 import ru.spbau.mit.roguelike.model.units.entity.WorldEntity;
-import ru.spbau.mit.roguelike.model.units.game.Game;
 
 /**
  * Applies all stat effects to entity
