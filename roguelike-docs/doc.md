@@ -77,7 +77,7 @@
 
 Во время хода одна сущность может атаковать другую, если пойдет в ее направлении.
 
-Более подробный конечный автомат очередности хода:
+Более подробная схема очередности хода:
 ![turn-automaton](https://github.com/ArgentumWalker/SD-course/raw/hw07/roguelike-docs/TurnFiniteAutomaton.png)
 
 ### Бой
@@ -147,6 +147,9 @@
 ## Взаимодействие игрока с UI
 Диаграмма последовательностей взаимодействия игрока с UI во время игры. На данной диаграмме отражены игровые View, а так же возможные варианты взаимодействия с ними.
 ![player-ui](https://github.com/ArgentumWalker/SD-course/raw/hw07/roguelike-docs/PlayerTurnSequence.png)
+
+Так же диаграмма совершения одного хода:
+![player-ui2](https://github.com/ArgentumWalker/SD-course/raw/hw07/roguelike-docs/PlayerTurnFiniteAutomaton.png)
 
 
 ## ИИ монстров
