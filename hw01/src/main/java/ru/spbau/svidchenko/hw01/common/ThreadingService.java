@@ -6,7 +6,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 /**
- * Execution service, that provides multithreding
+ * Execution service, that provides multithreading
  */
 public final class ThreadingService {
     private final static ExecutorService SERVICE = Executors.newCachedThreadPool();

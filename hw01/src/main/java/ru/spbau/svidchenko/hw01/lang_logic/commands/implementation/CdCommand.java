@@ -8,19 +8,17 @@ import ru.spbau.svidchenko.hw01.lang_logic.commands.CommandOutput;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * Pwd command implementation
- * Prints current directory structure
- * @author ArgentumWalker
- */
-public class PwdCommand extends Command {
-    public PwdCommand(List<String> arguments) {
+
+public class CdCommand extends Command {
+
+    public CdCommand(List<String> arguments) {
         super(arguments);
     }
 
     @Override
-    public CommandOutput execute(List<String> input) {
-        String output = SystemInteractionApi.getCurrentDirectory().toString();
-        return CommandOutput.output(Collections.singletonList(output));
+    public CommandOutput execute(List<String> input) throws CliException {
+        List<String> args = getArguments();
+        SystemInteractionApi.changeCurrentDir(args.isEmpty() ? "/" : args.get(0));
+        return CommandOutput.output(Collections.emptyList());
     }
 }

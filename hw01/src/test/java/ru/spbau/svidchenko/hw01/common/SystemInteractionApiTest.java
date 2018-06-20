@@ -29,5 +29,4 @@ public class SystemInteractionApiTest {
         assertEquals(1, result.size());
         assertEquals("test", result.get(0));
     }
-
 }
