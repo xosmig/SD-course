@@ -51,7 +51,9 @@ public class ParserImplTest extends ParserImpl {
         assertTrue(getCommand("exit", Collections.emptyList()) instanceof ExitCommand);
         assertTrue(getCommand("echo", Collections.emptyList()) instanceof EchoCommand);
         assertTrue(getCommand("cat", Collections.emptyList()) instanceof CatCommand);
-        assertTrue(getCommand("ls", Collections.emptyList()) instanceof OutterCommand);
+        assertTrue(getCommand("ls", Collections.emptyList()) instanceof LsCommand);
+        assertTrue(getCommand("cd", Collections.emptyList()) instanceof CdCommand);
+        assertTrue(getCommand("outterCommand", Collections.emptyList()) instanceof OutterCommand);
     }
 
     @Test
