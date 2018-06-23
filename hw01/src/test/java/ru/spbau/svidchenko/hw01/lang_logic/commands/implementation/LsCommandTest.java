@@ -2,6 +2,7 @@ package ru.spbau.svidchenko.hw01.lang_logic.commands.implementation;
 
 import org.junit.Test;
 import ru.spbau.svidchenko.hw01.common.SystemInteractionApi;
+import ru.spbau.svidchenko.hw01.exceptions.CliException;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -82,5 +83,10 @@ public class LsCommandTest extends AbstractFileSystemTest {
         assertEquals("subdir 2/directory 2:", result.get(10));
         assertEquals("duplicating file", result.get(11));
         assertEquals(12, result.size());
+    }
+
+    @Test(timeout = 1000, expected = CliException.class)
+    public void ls_noSuchDirectory() throws CliException {
+        new LsCommand(singletonList("nonexistent-subdir")).execute(emptyList());
     }
 }

@@ -8,7 +8,9 @@ import ru.spbau.svidchenko.hw01.lang_logic.commands.CommandOutput;
 import java.util.Collections;
 import java.util.List;
 
-
+/**
+ * Change current directory
+ */
 public class CdCommand extends Command {
 
     public CdCommand(List<String> arguments) {
@@ -18,7 +20,10 @@ public class CdCommand extends Command {
     @Override
     public CommandOutput execute(List<String> input) throws CliException {
         List<String> args = getArguments();
-        SystemInteractionApi.changeCurrentDir(args.isEmpty() ? "/" : args.get(0));
+        if (args.size() != 1) {
+            throw new CliException(new IllegalArgumentException("cd: expected exactly 1 argument"));
+        }
+        SystemInteractionApi.changeCurrentDir(args.get(0));
         return CommandOutput.output(Collections.emptyList());
     }
 }

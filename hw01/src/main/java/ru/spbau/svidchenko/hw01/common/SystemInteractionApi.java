@@ -58,7 +58,7 @@ public final class SystemInteractionApi {
 
     public static InputStream getFile(String file) throws CliException {
         try {
-            return Files.newInputStream(resolvePath(file));
+            return Files.newInputStream(s_currentDir.resolve(file));
         } catch (IOException e) {
             throw new CliException(e);
         }
@@ -68,22 +68,18 @@ public final class SystemInteractionApi {
         return s_currentDir.get();
     }
 
-    public static Path resolvePath(String path) throws CliException {
-        try {
-            return getCurrentDirectory().resolve(path);
-        } catch (InvalidPathException e) {
-            throw new CliException(e);
-        }
-    }
-
     public static void changeCurrentDir(String directory) throws CliException {
-        s_currentDir.set(resolvePath(directory));
+        Path target = s_currentDir.resolve(directory);
+        if (!target.toFile().isDirectory()) {
+            throw new CliException(new FileNotFoundException(directory + ": no such directory"));
+        }
+        s_currentDir.set(target);
     }
 
     public static List<String> getFilesList(String directory) throws CliException {
-        String[] content = getCurrentDirectory().resolve(directory).toFile().list();
+        String[] content = s_currentDir.resolve(directory).toFile().list();
         if (content == null) {
-            throw new CliException(new FileNotFoundException(directory));
+            throw new CliException(new FileNotFoundException(directory + ": no such directory"));
         }
         return Arrays.asList(content);
     }
@@ -105,6 +101,14 @@ public final class SystemInteractionApi {
 
         public Path get() {
             return path;
+        }
+
+        public Path resolve(String other) throws CliException {
+            try {
+                return path.resolve(other).toAbsolutePath().normalize();
+            } catch (InvalidPathException e) {
+                throw new CliException(e);
+            }
         }
     }
 }

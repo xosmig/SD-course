@@ -9,6 +9,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+/**
+ * List directory contents
+ */
 public class LsCommand extends Command {
 
     public LsCommand(List<String> arguments) {
